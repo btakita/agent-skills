@@ -189,3 +189,40 @@ When auditing skills:
 | [agent-rules](https://github.com/btakita/agent-rules) | Rule content appears inline in SKILL.md body |
 | [agent-runbooks](https://github.com/btakita/agent-runbooks) | Procedures live in the skill's `runbooks/` directory |
 | [agent-memories](https://github.com/btakita/agent-memories) | Skills may generate memories during use; memories reference the skill scope |
+
+## Agentic Contracts
+
+Behavioral promises the agent makes when performing skill lifecycle operations. These contracts are testable via the evals below.
+
+### Install
+
+When installing skills, the agent promises to:
+
+- **Install to the correct environment-specific path.** Each target environment (Claude Code, Cursor, Windsurf, etc.) has a distinct native path. The agent resolves the correct one based on the detected or specified environment.
+- **Never overwrite without checking.** If a skill file already exists at the target path, the agent compares content before deciding to update. It does not silently clobber existing customizations.
+- **Report the installed path.** After installation, the agent tells the user exactly where the skill was placed so they can verify.
+
+### Check
+
+When checking skills, the agent promises to:
+
+- **Compare content exactly (not just version).** Staleness is determined by byte-level content comparison, not version strings or timestamps.
+- **Report outdated vs missing vs up-to-date accurately.** Each skill gets one of three statuses. The agent never conflates "missing" with "outdated" or reports false positives.
+
+### Uninstall
+
+When uninstalling skills, the agent promises to:
+
+- **Remove only the skill file.** The agent deletes the specific skill artifact and nothing else.
+- **Clean up empty parent directories.** After removing the skill file, the agent removes any directories that are now empty up to the environment root.
+- **Not remove other files.** Sibling skills, user-created files, and unrelated content in the same tree are never touched.
+
+## Evals
+
+Planned evaluations that verify the agentic contracts above. Each eval is a scenario the agent must handle correctly.
+
+| Eval | Contract | Description |
+|------|----------|-------------|
+| [install_idempotent](evals/install_idempotent.md) | Install | Installing a skill twice produces the same result -- no duplicates, no errors, identical output |
+| [environment_path_resolution](evals/environment_path_resolution.md) | Install | Each target environment resolves to its correct native path |
+| [uninstall_cleanup](evals/uninstall_cleanup.md) | Uninstall | Uninstall removes the skill file and empty parent directories only |
