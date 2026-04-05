@@ -3,7 +3,7 @@ use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
 #[derive(Parser)]
-#[command(name = "agent-skills", about = "Manage contextually-activated instruction bundles")]
+#[command(name = "skill-harness", about = "Lifecycle management for AI agent skills")]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -79,14 +79,14 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn make_config(name: &str, content: &str) -> agent_skills::manage::SkillConfig {
+fn make_config(name: &str, content: &str) -> skill_harness::manage::SkillConfig {
     #[cfg(feature = "detect")]
     {
-        agent_skills::manage::skill_for_environment(name, content, env!("CARGO_PKG_VERSION"))
+        skill_harness::manage::skill_for_environment(name, content, env!("CARGO_PKG_VERSION"))
     }
     #[cfg(not(feature = "detect"))]
     {
-        agent_skills::manage::SkillConfig::generic(name, content, env!("CARGO_PKG_VERSION"))
+        skill_harness::manage::SkillConfig::generic(name, content, env!("CARGO_PKG_VERSION"))
     }
 }
 

@@ -1,6 +1,8 @@
-# Agent Skills
+# Skill Harness
 
-A convention for contextually-activated instruction bundles that work across AI coding tools.
+Lifecycle management for AI agent skills — install, audit, eval, sync across environments.
+
+Implements the [Agent Skills Standard](https://agentskills.io) with environment-aware installation, validation, and testing.
 
 ## The Problem
 

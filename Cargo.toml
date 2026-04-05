@@ -1,10 +1,10 @@
 [package]
-name = "agent-skills"
+name = "skill-harness"
 version = "0.1.0"
 edition = "2024"
-description = "Convention and management for contextually-activated AI agent instruction bundles"
+description = "Lifecycle management for AI agent skills — install, audit, eval, sync across environments"
 license = "CC0-1.0"
-repository = "https://github.com/btakita/agent-skills"
+repository = "https://github.com/btakita/skill-harness"
 
 [dependencies]
 agent-kit = { version = "0.3", optional = true }
