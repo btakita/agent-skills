@@ -120,6 +120,28 @@ See [SPEC.md](SPEC.md) for the full format specification, including directory st
 - [Claude Code Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills) -- Progressive disclosure for agent procedures
 - [Cursor Rules](https://docs.cursor.com/context/rules-for-ai) -- Cursor's rule system with Agent Requested mode
 
+## Install
+
+### Quick install (prebuilt binary)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/btakita/skill-harness/main/install.sh | sh
+```
+
+### Cargo
+
+```bash
+cargo install skill-harness
+```
+
+### From source
+
+```bash
+git clone https://github.com/btakita/skill-harness.git
+cd skill-harness
+cargo install --path .
+```
+
 ## License
 
 [CC0 1.0](LICENSE) -- Public domain. Use this convention however you like.
