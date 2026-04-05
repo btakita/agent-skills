@@ -1,0 +1,20 @@
+[package]
+name = "agent-skills"
+version = "0.1.0"
+edition = "2024"
+description = "Convention and management for contextually-activated AI agent instruction bundles"
+license = "CC0-1.0"
+repository = "https://github.com/btakita/agent-skills"
+
+[dependencies]
+agent-kit = { version = "0.3", optional = true }
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+glob = "0.3"
+
+[dev-dependencies]
+tempfile = "3"
+
+[features]
+default = ["detect"]
+detect = ["agent-kit"]
