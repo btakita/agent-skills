@@ -141,7 +141,7 @@ curl -fsSL https://raw.githubusercontent.com/btakita/skill-harness/main/install.
 ```
 
 The installer downloads the latest GitHub Release asset for Linux, macOS, or Windows
-from `btakita/skill-harness`. Set `VERSION=v0.1.2` to install a specific release or
+from `btakita/skill-harness`. Set `VERSION=v0.1.3` to install a specific release or
 `INSTALL_DIR=/path/to/bin` to choose the destination directory.
 
 Release asset names follow the Rust target triple:
@@ -202,7 +202,12 @@ Harness targets map to these paths:
 | `cursor` | `.cursor/rules/<name>.md` |
 | `generic` | `.agent/skills/<name>/SKILL.md` |
 
-`auto` uses environment detection when the crate is built with the default `detect` feature; otherwise it falls back to `generic`.
+`auto` uses the default plugin registry when the crate is built with the default `detect` feature; otherwise it falls back to `generic`.
+
+Library consumers can add integrations by implementing `SkillHarnessPlugin` and
+registering it with `PluginRegistry`. Custom plugins can detect their own
+environment and return a harness-specific skill path without depending on
+skill-harness internals.
 
 ### Install the bundled compose-skills package
 

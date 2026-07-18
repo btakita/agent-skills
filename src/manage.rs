@@ -437,22 +437,20 @@ fn collect_relative_files_inner(
     Ok(())
 }
 
-/// Create a SkillConfig that uses agent-kit Environment for path resolution.
-#[cfg(feature = "detect")]
+/// Create a SkillConfig using the default plugin registry for path resolution.
 pub fn skill_for_environment(
     name: impl Into<String>,
     content: impl Into<String>,
     version: impl Into<String>,
 ) -> SkillConfig {
-    let env = agent_kit::detect::Environment::detect();
-    let name_str = name.into();
-    let name_clone = name_str.clone();
-    SkillConfig {
-        name: name_str,
-        content: content.into(),
-        version: version.into(),
-        path_resolver: Box::new(move |_| env.skill_rel_path(&name_clone)),
-    }
+    crate::plugin::PluginRegistry::with_default_plugins()
+        .skill_config(
+            name,
+            content,
+            version,
+            &crate::plugin::PluginContext::process(),
+        )
+        .expect("default plugin registry must include a generic fallback plugin")
 }
 
 #[cfg(test)]
