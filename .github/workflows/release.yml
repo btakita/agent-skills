@@ -102,6 +102,22 @@ jobs:
       - run: cargo clippy --all-features -- -D warnings
       - run: cargo test --all-features
       - name: Publish to crates.io
-        run: cargo publish --allow-dirty || true
+        # `|| true` used to swallow every failure here, so a broken publish still
+        # reported a green job: v0.1.3 failed with `403 authentication failed`
+        # (expired CARGO_REGISTRY_TOKEN) while the run showed `publish: success`,
+        # and the crate had to be published by hand. Only the genuinely idempotent
+        # case — this version is already on crates.io, e.g. a re-run of an existing
+        # tag — is tolerated; everything else fails the job.
+        run: |
+          set -o pipefail
+          if cargo publish 2>&1 | tee publish.log; then
+            exit 0
+          fi
+          if grep -q "already exists" publish.log; then
+            echo "::notice::version already published to crates.io; treating as success"
+            exit 0
+          fi
+          echo "::error::cargo publish failed"
+          exit 1
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
